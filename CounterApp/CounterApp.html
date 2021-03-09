@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        html {
+            display: table;
+            margin: auto;
+        }
+
+        body {
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 50px;
+            background-color: grey;
+        }
+
+        p {
+            margin-left: 160px;
+            font-size: 100px;
+            color: red;
+        }
+
+        button {
+            margin-left: 30px;
+            font-size: 40px;
+            color: white;
+        }
+
+        #plus {
+            background-color: green;
+            border-color: green;
+            width: 60px;
+
+        }
+
+        #minus {
+            background-color: red;
+            border-color: red;
+            width: 60px;
+        }
+
+        #reset {
+            background-color: black;
+            border-color: black;
+        }
+
+        .blue {
+            background-color: lightblue;
+        }
+
+        .white {
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="blue">
+    <h1>Counter</h1>
+    <p id='number' class="white">0</p>
+
+    <button id='minus' disabled>-</button>
+    <button id='reset'>Reset</button>
+    <button id='plus'>+</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            
+
+            $('#minus').on('click', () => {
+
+                $('body').toggleClass('blue');
+                $('p').toggleClass('white');
+
+                let next = parseInt($('#number').text()) - 1;
+                $('#number').text(next);
+
+                $('#plus').attr('disabled', false);
+                if (next == 0) {
+                    $('#minus').attr('disabled', true);
+                }
+            });
+
+            $('#plus').on('click', () => {
+
+                let next = parseInt($('#number').text()) + 1;
+                $('#number').text(next);
+
+                $('body').toggleClass('blue');
+                $('p').toggleClass('white');
+
+                $('#minus').attr('disabled', false);
+                if (next == 10) {
+                    $('#plus').attr('disabled', true);
+                }
+            });
+            
+            $('#reset').on('click', () => {
+                $("p").text("0");
+                $('body').addClass('blue');
+                $('p').addClass('white');
+
+                $('#minus').attr('disabled', true);
+                $('#plus').attr('disabled', false);
+            });
+        });
+    </script>
+</body>
+
+</html>
