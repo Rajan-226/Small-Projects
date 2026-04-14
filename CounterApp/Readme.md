@@ -1,13 +1,14 @@
-When user click on + ( increment ) button, counter is incremented by 1.
- 
-When user click on - ( decrement ) button, counter is decremented by 1.
+# Premium Counter App
 
-When user click on Reset, Counter is reset to 0,
+A modern, highly-aesthetic counter built with Vanilla HTML, CSS, and JavaScript.
 
-When the value of counter is 0, - ( decrement ) button and will be disabled.
+## Features
 
-When the value of counter is 10, + ( increment) button and will be disabled.
+* **Modern Glassmorphism UI**: Beautiful semi-transparent styling with gradient backgrounds and a "pop" animation when the number updates.
+* **Dynamic Color Indicators**: The counter display smoothly changes its gradient coloring based on whether the value is positive, negative, or zero.
+* **Custom Step Sizes**: Configure the increment and decrement steps instantly by choosing between steps of `1`, `5`, or `10`.
+* **Auto Play**: Start an automatic timer that will increment the counter every second. Features a visual progress bar indicating time until the next tick.
+* **Audio Cues**: Includes subtle, dynamically generated beep sounds using the Web Audio API for a rich user experience without requiring external audio files.
 
-When the counter's value is even, background of the window will be blue and color of counter will bewhite.
-
-When the counter's value is odd, background of the window will be grey and color of the counter will be red.
+## How to use
+Simply open `CounterApp.html` in your web browser. Everything is bundled in a single file!
