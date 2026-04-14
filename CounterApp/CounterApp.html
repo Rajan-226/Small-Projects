@@ -1,117 +1,375 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Counter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        html,
+        :root {
+            --bg-gradient-start: #0f172a;
+            --bg-gradient-end: #1e293b;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary-color: #38bdf8;
+            --secondary-color: #f43f5e;
+            --text-color: #f8fafc;
+            --accent-glow: rgba(56, 189, 248, 0.4);
+            --button-hover: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
         body {
-            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-color);
+            overflow: hidden;
         }
 
-        html {
-            display: table;
-            margin: auto;
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 60%);
+            animation: rotateBG 20s linear infinite;
+            z-index: 0;
         }
 
-        body {
-            display: table-cell;
-            vertical-align: middle;
-            font-size: 50px;
-            background-color: grey;
+        @keyframes rotateBG {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        p {
-            margin-left: 160px;
+        .container {
+            position: relative;
+            z-index: 1;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px var(--accent-glow);
+            width: 90%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        .counter-display {
             font-size: 100px;
-            color: red;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .counter-display.pop {
+            transform: scale(1.1);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         button {
-            margin-left: 30px;
-            font-size: 40px;
-            color: white;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        #plus {
-            background-color: green;
-            border-color: green;
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-circle {
             width: 60px;
-
+            height: 60px;
+            font-size: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
         }
 
-        #minus {
-            background-color: red;
-            border-color: red;
-            width: 60px;
+        .btn-circle:hover:not(:disabled) {
+            background: var(--button-hover);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        #reset {
-            background-color: black;
-            border-color: black;
-        }
-
-        .blue {
-            background-color: lightblue;
-        }
-
-        .white {
+        .btn-primary {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: linear-gradient(135deg, var(--primary-color), #2563eb);
             color: white;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        .btn-action {
+             background: rgba(255, 255, 255, 0.1);
+             padding: 8px 16px;
+             font-size: 14px;
+             color: #cbd5e1;
+             border-radius: 8px;
+        }
+        .btn-action:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .step-settings, .autoplay-settings {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .settings-label {
+            font-size: 14px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .step-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .step-btn {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid var(--glass-border);
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        .step-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .timer-indicator {
+            height: 4px;
+            background: var(--primary-color);
+            width: 0%;
+            border-radius: 2px;
+            margin-top: 10px;
+            transition: width 0.1s linear;
+            display: none;
+        }
+        .timer-indicator.active {
+            display: block;
         }
     </style>
 </head>
+<body>
+    <div class="container">
+        <h1>Counter</h1>
+        
+        <div class="counter-display" id="counterValue">0</div>
+        
+        <div class="controls">
+            <button class="btn-circle" id="btnMinus" aria-label="Decrease">−</button>
+            <button class="btn-primary" id="btnReset">Reset</button>
+            <button class="btn-circle" id="btnPlus" aria-label="Increase">+</button>
+        </div>
 
-<body class="blue">
-    <h1>Counter</h1>
-    <p id='number' class="white">0</p>
+        <div class="step-settings">
+            <span class="settings-label">Step Size</span>
+            <div class="step-buttons">
+                <button class="step-btn active" data-step="1">1</button>
+                <button class="step-btn" data-step="5">5</button>
+                <button class="step-btn" data-step="10">10</button>
+            </div>
+        </div>
 
-    <button id='minus' disabled>-</button>
-    <button id='reset'>Reset</button>
-    <button id='plus'>+</button>
+        <div class="autoplay-settings">
+            <span class="settings-label">Auto Play</span>
+            <button class="btn-action" id="btnAutoPlay">Start</button>
+        </div>
+        
+        <div class="timer-indicator" id="timerBar"></div>
+    </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $(document).ready(() => {
-            
+        document.addEventListener('DOMContentLoaded', () => {
+            let count = 0;
+            let step = 1;
+            let autoPlayInterval = null;
+            let isAutoPlaying = false;
+            let progressInterval = null;
+            let progress = 0;
+            const AUTOPLAY_SPEED = 1000; // 1 second
 
-            $('#minus').on('click', () => {
+            const display = document.getElementById('counterValue');
+            const btnMinus = document.getElementById('btnMinus');
+            const btnPlus = document.getElementById('btnPlus');
+            const btnReset = document.getElementById('btnReset');
+            const stepBtns = document.querySelectorAll('.step-btn');
+            const btnAutoPlay = document.getElementById('btnAutoPlay');
+            const timerBar = document.getElementById('timerBar');
 
-                $('body').toggleClass('blue');
-                $('p').toggleClass('white');
-
-                let next = parseInt($('#number').text()) - 1;
-                $('#number').text(next);
-
-                $('#plus').attr('disabled', false);
-                if (next == 0) {
-                    $('#minus').attr('disabled', true);
+            // Sound effects (using web audio api generic beeps to avoid external assets)
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            function playBeep(frequency, duration) {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
                 }
-            });
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.value = frequency;
+                
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + duration);
+            }
 
-            $('#plus').on('click', () => {
-
-                let next = parseInt($('#number').text()) + 1;
-                $('#number').text(next);
-
-                $('body').toggleClass('blue');
-                $('p').toggleClass('white');
-
-                $('#minus').attr('disabled', false);
-                if (next == 10) {
-                    $('#plus').attr('disabled', true);
+            function updateDisplay() {
+                display.innerText = count;
+                
+                // Animation trigger
+                display.classList.remove('pop');
+                void display.offsetWidth; // trigger reflow
+                display.classList.add('pop');
+                
+                // Dynamic colors based on value
+                if (count > 0) {
+                    display.style.backgroundImage = 'linear-gradient(to right, #38bdf8, #818cf8)';
+                } else if (count < 0) {
+                    display.style.backgroundImage = 'linear-gradient(to right, #f43f5e, #fb923c)';
+                } else {
+                    display.style.backgroundImage = 'linear-gradient(to right, #94a3b8, #cbd5e1)';
                 }
-            });
-            
-            $('#reset').on('click', () => {
-                $("p").text("0");
-                $('body').addClass('blue');
-                $('p').addClass('white');
+            }
 
-                $('#minus').attr('disabled', true);
-                $('#plus').attr('disabled', false);
+            function increment() {
+                count += step;
+                updateDisplay();
+                playBeep(600, 0.1);
+            }
+
+            function decrement() {
+                count -= step;
+                updateDisplay();
+                playBeep(400, 0.1);
+            }
+
+            function reset() {
+                count = 0;
+                updateDisplay();
+                playBeep(300, 0.2);
+                if (isAutoPlaying) {
+                    toggleAutoPlay();
+                }
+            }
+
+            btnPlus.addEventListener('click', increment);
+            btnMinus.addEventListener('click', decrement);
+            btnReset.addEventListener('click', reset);
+
+            // Step configuration
+            stepBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    stepBtns.forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    step = parseInt(e.target.getAttribute('data-step'));
+                    playBeep(800, 0.05);
+                });
             });
+
+            // Auto Play Logic
+            function stepProgress() {
+                progress += (100 / (AUTOPLAY_SPEED / 16)); // ~60fps
+                if (progress >= 100) {
+                    progress = 0;
+                }
+                timerBar.style.width = `${progress}%`;
+            }
+
+            function toggleAutoPlay() {
+                if (isAutoPlaying) {
+                    clearInterval(autoPlayInterval);
+                    clearInterval(progressInterval);
+                    btnAutoPlay.innerText = "Start";
+                    btnAutoPlay.classList.remove('active');
+                    timerBar.classList.remove('active');
+                    isAutoPlaying = false;
+                    playBeep(300, 0.1);
+                } else {
+                    increment(); // start immediately
+                    progress = 0;
+                    timerBar.classList.add('active');
+                    autoPlayInterval = setInterval(increment, AUTOPLAY_SPEED);
+                    progressInterval = setInterval(stepProgress, 16);
+                    btnAutoPlay.innerText = "Stop";
+                    btnAutoPlay.classList.add('active');
+                    isAutoPlaying = true;
+                    playBeep(800, 0.1);
+                }
+            }
+
+            btnAutoPlay.addEventListener('click', toggleAutoPlay);
         });
     </script>
 </body>
-
 </html>
